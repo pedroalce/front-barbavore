@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { getUserAppointments, deleteAppointment } from "../services/Appointments";
 import "./MyAppointments.css";
 
 export default function MyAppointments() {
@@ -8,27 +9,29 @@ export default function MyAppointments() {
   const [feedback, setFeedback] = useState("");
 
   useEffect(() => {
+    let mounted = true;
     if (!user) {
       setItems([]);
       return;
     }
-    try {
-      // exemplo: carregar agendamentos fictícios por usuário
-      const raw = localStorage.getItem(`appointments_${user.email}`);
-      const parsed = raw ? JSON.parse(raw) : [];
-      setItems(parsed);
-    } catch (e) {
-      console.error("Falha ao carregar agendamentos", e);
-      setItems([]);
-    }
+    getUserAppointments(user.email)
+      .then((list) => {
+        if (mounted) setItems(list || []);
+      })
+      .catch((e) => {
+        console.error("Falha ao carregar agendamentos", e);
+        if (mounted) setItems([]);
+      });
+    return () => { mounted = false; };
   }, [user]);
 
-  const handleCancel = async (id) => {
+  const handleDelete = async (id) => {
     try {
-      // lógica para cancelar agendamento (atualizar localStorage, etc.)
-      setItems((prev) => prev.filter((item) => item.id !== id));
+      await deleteAppointment(id);
+      setItems((s) => s.filter((i) => i.id !== id));
       setFeedback("Agendamento cancelado com sucesso.");
-    } catch (err) {
+    } catch (e) {
+      console.error("Failed to delete appointment", e);
       setFeedback("Erro ao cancelar agendamento.");
     }
   };
@@ -45,18 +48,20 @@ export default function MyAppointments() {
     <div className="appointments-container">
       <h3>Meus Agendamentos</h3>
       {feedback && <p className="feedback-message">{feedback}</p>}
-      <ul className="appointments-list">
-        {items.map((a, i) => (
-          <li key={i} className="appointment-card">
-            <p><strong>Serviço:</strong> {a.service}</p>
-            <p><strong>Data:</strong> {a.date}</p>
-            <p><strong>Hora:</strong> {a.time}</p>
-            <button onClick={() => handleCancel(a.id)} className="btn-cancel">
-              Cancelar
-            </button>
-          </li>
+      <div className="app-list">
+        {items.map((a) => (
+          <div className="app-item" key={a.id}>
+            <div>
+              <div style={{fontWeight:600}}>{a.date}</div>
+              <div style={{color:"var(--muted)"}}>{a.note ?? "—"}</div>
+            </div>
+            <div style={{display:"flex",gap:8,alignItems:"center"}}>
+              <button className="btn" onClick={() => alert("Detalhes (exemplo)")}>Ver</button>
+              <button className="btn btn-ghost" onClick={() => handleDelete(a.id)}>Cancelar</button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

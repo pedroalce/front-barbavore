@@ -4,10 +4,9 @@
   --panel: #ffffff;
   --muted: #9b9b9b;
   --text: #111827;
-  --accent: #d6a94a; /* amarelo */
+  --accent: #d6a94a;
   --accent-dark: #b9852d;
-  --sidebar-bg: #0f1720; /* escuro */
-  --sidebar-contrast: #111827;
+  --sidebar-bg: #0f1720;
   --card-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
   --radius: 12px;
   --radius-sm: 8px;
@@ -23,11 +22,8 @@ html,body,#root{
 body{
   background:var(--bg);
   color:var(--text);
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   font-size:14px;
-  line-height:1.4;
 }
 
 /* App layout */
@@ -122,10 +118,10 @@ body{
   grid-template-columns: 1fr 380px;
 }
 .card {
-  padding:16px;
-  border-radius:var(--radius-sm);
-  background:linear-gradient(180deg, #fff, #fbfbfb);
-  box-shadow:0 4px 14px rgba(15,23,42,0.04);
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fff, #fbfbfb);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
 }
 
 /* Forms */
@@ -185,6 +181,39 @@ input[type="datetime-local"], input[type="text"], select {
   border-radius:10px;
   background:linear-gradient(180deg,#fff,#fafafa);
   align-items:center;
+}
+
+/* Home / Hero */
+.hero {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+.hero-content {
+  max-width: 720px;
+}
+.hero h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  line-height: 1.05;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+}
+.hero-illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Features */
+.card {
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fff, #fbfbfb);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
 }
 
 /* small responsive */

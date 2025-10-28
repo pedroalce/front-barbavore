@@ -13,7 +13,7 @@ export default class ErrorBoundary extends React.Component {
   }
   render() {
     if (this.state.hasError) {
-      return <div>Ocorreu um erro ao carregar este componente.</div>;
+      return <div style={{ padding: 24 }}>Ocorreu um erro ao carregar este componente.</div>;
     }
     return this.props.children;
   }

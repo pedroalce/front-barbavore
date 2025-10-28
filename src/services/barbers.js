@@ -1,4 +1,4 @@
-// Serviço simples de barbers (fallback local/static) — usado por componentes que importam "../services/barbers"
+// Serviço de barbers com alias getAvailableBarbers.
 
 const STORAGE_KEY = "barbavore_barbers_v1";
 
@@ -9,13 +9,11 @@ function loadAll() {
   } catch (e) {
     console.error("barbers: failed to read storage", e);
   }
-  // fallback estático mínimo
   return [
     { id: "b1", name: "João", email: "joao@barbavore.local" },
     { id: "b2", name: "Marcos", email: "marcos@barbavore.local" },
   ];
 }
-
 function saveAll(items) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -29,10 +27,7 @@ export function fetchBarbers() {
 }
 
 export function fetchBarberByEmail(email) {
-  return new Promise((resolve) => {
-    const found = loadAll().find((b) => b.email === email) || null;
-    resolve(found);
-  });
+  return Promise.resolve(loadAll().find((b) => b.email === email) || null);
 }
 
 export function createBarber(barber) {
@@ -67,7 +62,7 @@ export function deleteBarber(id) {
   });
 }
 
-/** Alias para compatibilidade */
+/* alias */
 export const getAvailableBarbers = fetchBarbers;
 
 const BarbersService = {
@@ -76,7 +71,7 @@ const BarbersService = {
   createBarber,
   updateBarber,
   deleteBarber,
-  getAvailableBarbers, // adicionado no default export
+  getAvailableBarbers,
 };
 
 export default BarbersService;

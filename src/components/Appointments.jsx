@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { getAvailableBarbers } from "../services/barbers"; // nova função
+import { getAvailableBarbers } from "../services/barbers";
+import { createAppointment } from "../services/Appointments";
 
 export default function AppointmentForm() {
   const { user } = useContext(AuthContext) ?? {};
@@ -28,47 +29,74 @@ export default function AppointmentForm() {
     };
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
       alert("Faça login para agendar.");
       return;
     }
-    const payload = { user: user.email, barber, date, note };
-    console.log("Novo agendamento:", payload);
-    alert("Agendamento criado (exemplo).");
-    setDate("");
-    setNote("");
+    try {
+      const payload = { user: user.email, barber, date, note };
+      await createAppointment(payload);
+      alert("Agendamento criado.");
+      setDate("");
+      setNote("");
+    } catch (err) {
+      console.error("Failed to create appointment", err);
+      alert("Erro ao criar agendamento.");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Selecione barbeiro:
-        <select value={barber} onChange={(e) => setBarber(e.target.value)}>
-          <option value="">— selecione —</option>
-          {barbers.map((b) => (
-            <option key={b.id ?? b.email} value={b.email ?? b.id}>
-              {b.name ?? b.email}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className="form-row">
+        <label>
+          Selecione barbeiro:
+          <select value={barber} onChange={(e) => setBarber(e.target.value)}>
+            <option value="">— selecione —</option>
+            {barbers.map((b) => (
+              <option key={b.id ?? b.email} value={b.email ?? b.id}>
+                {b.name ?? b.email}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
-      <label>
-        Data/Hora:
-        <input
-          type="datetime-local"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Observações:
-        <input value={note} onChange={(e) => setNote(e.target.value)} />
-      </label>
-      <button type="submit">Agendar</button>
+      <div className="form-row">
+        <label>
+          Data/Hora:
+          <input
+            type="datetime-local"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <div className="form-row">
+        <label>
+          Observações:
+          <input value={note} onChange={(e) => setNote(e.target.value)} />
+        </label>
+      </div>
+
+      <div style={{ display: "flex", gap: 10 }}>
+        <button className="btn btn-primary" type="submit">
+          Agendar
+        </button>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => {
+            setDate("");
+            setNote("");
+          }}
+        >
+          Limpar
+        </button>
+      </div>
     </form>
   );
 }

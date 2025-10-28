@@ -20,14 +20,29 @@ const Sidebar = ({ role }) => {
             </div>
 
             <nav aria-label="main">
-                {links.map(({ to, icon, label }) => (
-                    <a key={to} href={to} className="sidebar-link">
-                        <span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>
-                            {icon}
-                        </span>
-                        {label}
-                    </a>
-                ))}
+                <a href="#" className="active">
+                    <span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                            <path d="M3 11.5L12 3l9 8.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M9 21V12h6v9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </span>
+                    Painel
+                </a>
+
+                <a href="#">
+                    <span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+                            <path d="M8 12h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                        </svg>
+                    </span>
+                    Agendar
+                </a>
+
+                <a href="#"><span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>📅</span> Meus horários</a>
+                <a href="#"><span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>👥</span> Clientes</a>
+                <a href="#"><span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>⚙️</span> Configurações</a>
             </nav>
 
             <div style={{ marginTop: "auto", fontSize: 13, opacity: 0.85 }}>

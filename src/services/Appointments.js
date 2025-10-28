@@ -1,4 +1,4 @@
-// Serviço simples de appointments (fallback localStorage) — usado por BarberDashboard e outros componentes
+// Serviço de appointments com aliases compatíveis (getBarberAppointments, updateAppointmentStatus, etc.)
 
 const STORAGE_KEY = "barbavore_appointments_v1";
 
@@ -22,24 +22,15 @@ function saveAll(items) {
 
 /** API simulada (retorna Promises para compatibilidade) */
 export function fetchAllAppointments() {
-    return new Promise((resolve) => {
-        const items = loadAll();
-        resolve(items);
-    });
+    return Promise.resolve(loadAll());
 }
 
 export function fetchAppointmentsByBarber(barberEmail) {
-    return new Promise((resolve) => {
-        const items = loadAll().filter((a) => a.barber === barberEmail);
-        resolve(items);
-    });
+    return Promise.resolve(loadAll().filter((a) => a.barber === barberEmail));
 }
 
 export function fetchAppointmentsByUser(userEmail) {
-    return new Promise((resolve) => {
-        const items = loadAll().filter((a) => a.user === userEmail);
-        resolve(items);
-    });
+    return Promise.resolve(loadAll().filter((a) => a.user === userEmail));
 }
 
 export function createAppointment(appointment) {
@@ -81,13 +72,13 @@ export function deleteAppointment(id) {
     });
 }
 
-/** Aliases para compatibilidade com imports existentes em outros arquivos */
+/* Aliases for compatibility */
 export const getAllAppointments = fetchAllAppointments;
 export const getBarberAppointments = fetchAppointmentsByBarber;
 export const getUserAppointments = fetchAppointmentsByUser;
-export const updateAppointmentStatus = updateAppointment; // novo alias para compatibilidade com BarberDashboard
+export const updateAppointmentStatus = updateAppointment;
 
-/** Default export para compatibilidade com imports default */
+/* Default export */
 const AppointmentsService = {
     fetchAllAppointments,
     fetchAppointmentsByBarber,
@@ -98,7 +89,7 @@ const AppointmentsService = {
     getAllAppointments,
     getBarberAppointments,
     getUserAppointments,
-    updateAppointmentStatus, // adicionado aqui também
+    updateAppointmentStatus,
 };
 
 export default AppointmentsService;

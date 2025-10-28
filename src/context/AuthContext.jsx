@@ -5,13 +5,16 @@ export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("barbavore_user");
-      if (saved) setUser(JSON.parse(saved));
+      const raw = localStorage.getItem("barbavore_user");
+      if (raw) setUser(JSON.parse(raw));
     } catch (e) {
-      console.error("Failed to load user from storage", e);
+      console.error("AuthContext: failed to read user", e);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -22,7 +25,7 @@ export function AuthProvider({ children }) {
     try {
       localStorage.setItem("barbavore_user", JSON.stringify(u));
     } catch (e) {
-      console.error("Failed to save user", e);
+      console.error("AuthContext: failed to save user", e);
     }
   };
 
@@ -32,12 +35,12 @@ export function AuthProvider({ children }) {
     try {
       localStorage.removeItem("barbavore_user");
     } catch (e) {
-      console.error("Failed to remove user", e);
+      console.error("AuthContext: failed to remove user", e);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

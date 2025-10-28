@@ -3,11 +3,10 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 import ErrorBoundary from "./components/ErrorBoundary";
-import "./index.css"; // se tiver estilos globais
 
 const rootEl = document.getElementById("root");
 if (!rootEl) {
-  throw new Error("Root element not found. Ensure index.html has a <div id=\"root\"></div>");
+  throw new Error('Root element not found. Ensure index.html has a <div id="root"></div>');
 }
 const root = createRoot(rootEl);
 

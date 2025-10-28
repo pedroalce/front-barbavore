@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import {
   getBarberAppointments,
   updateAppointmentStatus,
-} from "../../services/appointments";
+} from "../../services/Appointments";
 import "./BarberDashboard.css";
 
 export default function BarberDashboard() {

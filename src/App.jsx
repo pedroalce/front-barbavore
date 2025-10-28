@@ -1,29 +1,25 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
-import Navbar from "./components/Shared/Navbar";
-import AppRoutes from "./routes/AppRoutes";
-import Loader from "./components/Shared/Loader";
+import ErrorBoundary from "./components/ErrorBoundary";
 
-function Layout() {
-  const { loading } = useContext(AuthContext);
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  return (
-    <>
-      <Navbar />
-      <AppRoutes />
-    </>
-  );
-}
+const ClientDashboard = lazy(() => import("./components/Dashboard/ClientDashboard"));
+// opcional: se existir, manter o import do BarberDashboard
+const BarberDashboard = lazy(() => import("./components/Dashboard/BarberDashboard"));
 
 export default function App() {
   return (
     <Router>
-      <Layout />
+      <div id="app-root">
+        <h1>Barbavore</h1>
+
+        <ErrorBoundary>
+          <Suspense fallback={<div>Carregando painel...</div>}>
+            {/* Rendera o dashboard do cliente por padrão */}
+            <ClientDashboard />
+            {/* <BarberDashboard /> // descomente se desejar exibir o painel do barbeiro também */}
+          </Suspense>
+        </ErrorBoundary>
+      </div>
     </Router>
   );
 }

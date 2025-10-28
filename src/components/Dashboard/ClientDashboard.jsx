@@ -1,23 +1,38 @@
-import { useContext } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import AppointmentForm from "../AppointmentForm";
-import MyAppointments from "../../MyAppointments";
+import ErrorBoundary from "../ErrorBoundary";
 
+// Usar lazy simples e tratar erros via ErrorBoundary
+const AppointmentForm = lazy(() => import("../Appointments"));
+const MyAppointments = lazy(() => import("../MyAppointments"));
 
 export default function ClientDashboard() {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext) ?? {};
+
+  // Proteção caso o user não esteja definido
+  if (!user) {
+    return <div>Por favor, faça login para acessar o painel.</div>;
+  }
 
   return (
     <div className="client-dashboard">
-      <h2>Bem-vindo, {user?.email}</h2>
+      <h2>Bem-vindo, {user?.email ?? "usuário"}</h2>
 
       <section>
         <h3>Agendar novo horário</h3>
-        <AppointmentForm />
+        <ErrorBoundary>
+          <Suspense fallback={<div>Carregando formulário...</div>}>
+            <AppointmentForm />
+          </Suspense>
+        </ErrorBoundary>
       </section>
 
       <section>
-        <MyAppointments />
+        <ErrorBoundary>
+          <Suspense fallback={<div>Carregando agendamentos...</div>}>
+            <MyAppointments />
+          </Suspense>
+        </ErrorBoundary>
       </section>
     </div>
   );

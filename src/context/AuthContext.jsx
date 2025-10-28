@@ -1,34 +1,44 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 // Criando o contexto
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  // Simulação de login
-  const login = (email, senha) => {
-    setUser({ email });
-  };
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("barbavore_user");
+      if (saved) setUser(JSON.parse(saved));
+    } catch (e) {
+      console.error("Failed to load user from storage", e);
+    }
+  }, []);
 
-  // Simulação de cadastro
-  const register = (nome, email, senha) => {
-    setUser({ nome, email });
+  // Simulação de login
+  const login = (email) => {
+    const u = { email };
+    setUser(u);
+    try {
+      localStorage.setItem("barbavore_user", JSON.stringify(u));
+    } catch (e) {
+      console.error("Failed to save user", e);
+    }
   };
 
   // Simulação de logout
   const logout = () => {
     setUser(null);
+    try {
+      localStorage.removeItem("barbavore_user");
+    } catch (e) {
+      console.error("Failed to remove user", e);
+    }
   };
 
-  useEffect(() => {
-    // Aqui poderíamos buscar user do localStorage ou Supabase
-    console.log("AuthContext montado");
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}

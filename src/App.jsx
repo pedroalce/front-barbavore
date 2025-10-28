@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
+import "./styles/global.css";
 
 const ClientDashboard = lazy(() => import("./components/Dashboard/ClientDashboard"));
 // opcional: se existir, manter o import do BarberDashboard

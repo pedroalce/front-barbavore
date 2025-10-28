@@ -1,10 +1,10 @@
+import React from "react";
 import "./Loader.css";
 
 export default function Loader() {
   return (
-    <div className="loader-container">
-      <div className="spinner" />
-      <p>Carregando...</p>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: 40 }}>
+      <div style={{ width: 36, height: 36, borderRadius: 18, background: "linear-gradient(90deg,var(--accent),var(--accent-dark))", opacity: 0.95 }} />
     </div>
   );
 }

@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
-const Sidebar = ({ role }) => {
-    const links = [
-        { to: "/dashboard", icon: "🏠", label: "Dashboard" },
-        { to: "/agenda", icon: "📅", label: "Agenda" },
-        { to: "/historico", icon: "📜", label: "Histórico" },
-        { to: "/perfil", icon: "👤", label: "Perfil" },
-        { to: "/logout", icon: "🚪", label: "Sair" },
-    ];
+const Sidebar = () => {
+    const { user, logout } = useContext(AuthContext) ?? {};
+    const linkClass = ({ isActive }) => (isActive ? "active" : "");
 
     return (
         <aside className="sidebar">
@@ -20,7 +17,7 @@ const Sidebar = ({ role }) => {
             </div>
 
             <nav aria-label="main">
-                <a href="#" className="active">
+                <NavLink to="/dashboard" className={linkClass}>
                     <span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
                             <path d="M3 11.5L12 3l9 8.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -28,9 +25,9 @@ const Sidebar = ({ role }) => {
                         </svg>
                     </span>
                     Painel
-                </a>
+                </NavLink>
 
-                <a href="#">
+                <NavLink to="/appointments" className={linkClass}>
                     <span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
                             <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
@@ -38,17 +35,30 @@ const Sidebar = ({ role }) => {
                         </svg>
                     </span>
                     Agendar
-                </a>
+                </NavLink>
 
-                <a href="#"><span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>📅</span> Meus horários</a>
-                <a href="#"><span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>👥</span> Clientes</a>
-                <a href="#"><span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>⚙️</span> Configurações</a>
+                <NavLink to="/clients" className={linkClass}>
+                    <span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>👥</span> Clientes
+                </NavLink>
+                <NavLink to="/settings" className={linkClass}>
+                    <span style={{ display: "inline-flex", alignItems: "center", marginRight: 10 }}>⚙️</span> Configurações
+                </NavLink>
             </nav>
 
             <div style={{ marginTop: "auto", fontSize: 13, opacity: 0.85 }}>
-                <div style={{ marginBottom: 8 }}>Usuário: <strong>cliente@exemplo</strong></div>
+                <div style={{ marginBottom: 8 }}>
+                    Usuário: <strong>{user?.email ?? "convidado"}</strong>
+                </div>
                 <div style={{ display: "flex", gap: 8 }}>
-                    <button className="btn btn-ghost" style={{ flex: 1 }}>Sair</button>
+                    {user ? (
+                        <button className="btn btn-ghost" style={{ flex: 1 }} onClick={logout}>
+                            Sair
+                        </button>
+                    ) : (
+                        <NavLink to="/login" className="btn btn-ghost" style={{ textDecoration: "none", textAlign: "center", padding: 10 }}>
+                            Entrar
+                        </NavLink>
+                    )}
                 </div>
             </div>
         </aside>

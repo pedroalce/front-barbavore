@@ -1,17 +1,12 @@
-import React, { Suspense, lazy, useContext } from "react";
+import React from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./styles/global.css";
-import { AuthContext } from "./context/AuthContext";
-import Loader from "./components/Shared/Loader";
-import Home from "./components/Home";
-
-const ClientDashboard = lazy(() => import("./components/Dashboard/ClientDashboard"));
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./AppRoutes";
 
 export default function App() {
-  const { user, loading } = useContext(AuthContext);
-
   return (
-    <div id="app-root">
+    <Router>
       {/* Cabeçalho sempre visível */}
       <header style={{ padding: 16, borderBottom: "1px solid #eee", background: "var(--panel)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -27,18 +22,9 @@ export default function App() {
 
       <main style={{ padding: 24 }}>
         <ErrorBoundary>
-          {loading ? (
-            <Loader />
-          ) : user ? (
-            <Suspense fallback={<div>Carregando painel...</div>}>
-              <ClientDashboard />
-            </Suspense>
-          ) : (
-            // Home contém o formulário de login — será exibido imediatamente na página inicial
-            <Home />
-          )}
+          <AppRoutes />
         </ErrorBoundary>
       </main>
-    </div>
+    </Router>
   );
 }

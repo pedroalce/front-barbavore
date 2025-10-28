@@ -45,3 +45,6 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
+
+// ...compatibilidade: export default também para casos que importam default...
+export default AuthProvider;

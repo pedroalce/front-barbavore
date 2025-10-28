@@ -8,7 +8,6 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
 
     const handleQuickLogin = () => {
-        // login simulado — substitua pela sua UI de autenticação real
         login?.("cliente@exemplo");
     };
 
@@ -28,7 +27,7 @@ export default function Home() {
 
         try {
             setLoading(true);
-            // login é síncrono no AuthContext atual, mas mantemos async por segurança
+            // login é síncrono no AuthContext atual, mantemos a estrutura async por segurança
             await Promise.resolve(login?.(email));
         } catch (err) {
             console.error("Login failed", err);

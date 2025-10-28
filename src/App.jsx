@@ -2,7 +2,7 @@ import React from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./styles/global.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import AppRoutes from "./AppRoutes";
+import AppRoutes from "./routes/AppRoutes";
 
 export default function App() {
   return (

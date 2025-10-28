@@ -1,10 +1,8 @@
 import React, { Suspense, lazy, useContext } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./styles/global.css";
-// usar import named (AuthContext existe como named export no projeto)
 import { AuthContext } from "./context/AuthContext";
-
-import Loader from "./components/Shared/Loader";
+import Loader from "./components/Shared/Loader.jsx";
 import Home from "./components/Home";
 
 const ClientDashboard = lazy(() => import("./components/Dashboard/ClientDashboard"));

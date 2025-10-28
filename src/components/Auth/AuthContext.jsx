@@ -32,6 +32,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
+    navigate("/dashboard"); // ou "/barber-dashboard" dependendo do perfil
   };
 
   // Registro

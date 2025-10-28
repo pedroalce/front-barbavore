@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useContext } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./styles/global.css";
 import { AuthContext } from "./context/AuthContext";
-import Loader from "./components/Shared/Loader.jsx";
+import Loader from "./components/Shared/Loader";
 import Home from "./components/Home";
 
 const ClientDashboard = lazy(() => import("./components/Dashboard/ClientDashboard"));
